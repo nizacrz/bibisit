@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-// import 'package:bibisit/constants/fonts_strings.dart';
-// import 'package:bibisit/constants/image_strings.dart';
 import 'package:flutter/material.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -63,7 +61,7 @@ class WelcomeScreen extends StatelessWidget {
                     width: 150,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Handle Button Press
+                        Navigator.pushReplacementNamed(context, '/login');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.amber[300],
