@@ -27,9 +27,11 @@ class LoginScreen extends StatelessWidget {
                 Container(
                   child: Image.asset(
                     "assets/images/Logo.png",
-                    width: 150,
+                    width: 200,
                   ),
                 ),
+
+                SizedBox(height: 30),
 
                 //Welcome back text
                 Text(
