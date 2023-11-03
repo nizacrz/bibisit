@@ -15,10 +15,10 @@ class WelcomeScreen extends StatelessWidget {
             children: [
               //First Column
               Container(
-                margin: EdgeInsets.only(bottom: 70),
+                margin: EdgeInsets.only(bottom: 60),
                 child: Image.asset(
                   "assets/images/welcome_banner.png",
-                  width: 412,
+                  width: 400,
                 ),
               ),
 
@@ -33,7 +33,7 @@ class WelcomeScreen extends StatelessWidget {
 
               //Third Column
               Container(
-                margin: EdgeInsets.only(top: 10, bottom: 60),
+                margin: EdgeInsets.only(top: 30, bottom: 60),
                 alignment: Alignment.centerLeft,
                 child: Padding(
                   padding: EdgeInsets.only(left: 18),
@@ -55,7 +55,7 @@ class WelcomeScreen extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Colors.amber[300],
+                    color: Colors.red.shade300,
                   ),
                   child: SizedBox(
                     width: 150,
@@ -64,8 +64,8 @@ class WelcomeScreen extends StatelessWidget {
                         Navigator.pushReplacementNamed(context, '/login');
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.amber[300],
-                        foregroundColor: Colors.pink[400],
+                        backgroundColor: Colors.red.shade300,
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -83,7 +83,7 @@ class WelcomeScreen extends StatelessWidget {
                           TextSpan(
                             text: ' Get Started ',
                             style: TextStyle(
-                              color: Colors.pink[400],
+                              color: Colors.white,
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                             ),

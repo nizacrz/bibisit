@@ -1,4 +1,5 @@
 import 'package:bibisit/pages/login_page.dart';
+import 'package:bibisit/pages/splash_screen.dart';
 import 'package:bibisit/pages/welcome_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -18,10 +19,11 @@ class MyApp extends StatelessWidget {
         primaryColor: Colors.blue, // Customize the theme colors as needed
         hintColor: Colors.pink,
       ),
-      initialRoute: '/login', // Start with the LoginScreen
+      initialRoute: '/splashScreen', // Start with the LoginScreen
       routes: {
         '/welcome': (context) => WelcomeScreen(),
         '/login': (context) => LoginScreen(),
+        '/splashScreen': (context) => SplashScreen(),
         // Add routes for other screens here, e.g., '/dashboard', etc.
       },
     );
