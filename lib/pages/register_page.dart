@@ -1,16 +1,15 @@
-import 'package:bibisit/pages/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'homepage.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -18,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool emailValid = true; // Track email validation
   bool passwordValid = true; // Track password validation
 
-  Future<void> signIn() async {
+  Future<void> register() async {
     setState(() {
       isLoading = true; // Start loading
     });
@@ -33,32 +32,26 @@ class _LoginScreenState extends State<LoginScreen> {
         isLoading = false; // Stop loading
       });
     } else {
-      // Perform login with validated credentials
+      // Perform registration with validated credentials
       try {
         final UserCredential userCredential =
-            await _auth.signInWithEmailAndPassword(
+            await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
         final User? user = userCredential.user;
 
         if (user != null) {
-          // Successfully signed in, navigate to the home page.
+          // Successfully registered, navigate to the home page.
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => HomePage()),
           );
         } else {
-          // Handle user being null, show a generic error snackbar.
-          showSnackbar(
-              context, 'Incorrect email or password. Please try again.');
+          showSnackbar(context, 'Registration failed. Please try again.');
         }
       } on FirebaseAuthException catch (e) {
-        if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
-          showSnackbar(context, 'Invalid Login Credentials. Please try again.');
-        } else {
-          showSnackbar(context, 'An error occurred. Please try again.');
-        }
+        showSnackbar(context, 'Registration failed. Please try again.');
       } finally {
         setState(() {
           isLoading = false; // Stop loading
@@ -67,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-// Function to show a snackbar
+  // Function to show a snackbar
   void showSnackbar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -93,10 +86,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     width: 200,
                   ),
                 ),
-                SizedBox(height: 30),
-                // Welcome back text
+                SizedBox(height: 20),
+
+                // Register text
                 Text(
-                  'Welcome Back!',
+                  'Create an Account',
                   style: TextStyle(
                     color: Colors.red[300],
                     fontSize: 35,
@@ -104,21 +98,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     fontWeight: FontWeight.normal,
                   ),
                 ),
-                SizedBox(height: 25),
+                SizedBox(height: 15),
 
                 // Email field
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: TextField(
-                    key: Key(
-                        'emailTextField'), // Add a key to access the TextField
+                    key: Key('emailTextField'),
                     controller: emailController,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            color: emailValid
-                                ? Colors.pink.shade100
-                                : Colors.red), // Update border color
+                          color: emailValid ? Colors.pink.shade100 : Colors.red,
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.pink.shade200),
@@ -136,16 +128,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: TextField(
-                    key: Key(
-                        'passwordTextField'), // Add a key to access the TextField
+                    key: Key('passwordTextField'),
                     controller: passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(
-                            color: passwordValid
-                                ? Colors.pink.shade100
-                                : Colors.red), // Update border color
+                          color:
+                              passwordValid ? Colors.pink.shade100 : Colors.red,
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.pink.shade200),
@@ -157,28 +148,39 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 25),
+                SizedBox(height: 20),
 
-                // Forgot Password
+                // Confirm Password field
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Forgot Password?',
-                        style: TextStyle(color: Colors.grey[600]),
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: TextField(
+                    key: Key('passwordTextField'),
+                    controller: passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color:
+                              passwordValid ? Colors.pink.shade100 : Colors.red,
+                        ),
                       ),
-                    ],
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.pink.shade200),
+                      ),
+                      fillColor: Colors.red.shade100,
+                      filled: true,
+                      hintText: 'Confirm Password',
+                      hintStyle: TextStyle(color: Colors.grey[500]),
+                    ),
                   ),
                 ),
-                SizedBox(height: 25),
+                SizedBox(height: 20),
 
-                // Sign In Button with loading circle
+                // Sign Up Button with loading circle
                 Stack(
                   children: [
                     GestureDetector(
-                      onTap: isLoading ? null : signIn,
+                      onTap: isLoading ? null : register,
                       child: Container(
                         padding: EdgeInsets.all(20),
                         margin: EdgeInsets.symmetric(horizontal: 25),
@@ -190,7 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         child: Center(
                           child: Text(
-                            "Sign In",
+                            "Sign Up",
                             style: TextStyle(
                               color: Colors.white,
                               fontFamily: 'Roboto',
@@ -205,13 +207,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       Center(
                         child: CircularProgressIndicator(
                           valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.red.shade200),
+                            Colors.blue.shade200,
+                          ),
                         ),
                       ),
                   ],
                 ),
 
-                SizedBox(height: 25),
+                SizedBox(height: 15),
 
                 // Divider
                 Padding(
@@ -264,25 +267,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: 25),
 
-                // Not a member, register now
-// Not a member, register now
+                // Already a member, sign in now
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => RegisterScreen()),
-                    );
+                    Navigator.pop(context);
                   },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Not a member?',
+                        'Already a member?',
                         style: TextStyle(color: Colors.grey[700]),
                       ),
                       SizedBox(width: 4),
                       Text(
-                        'Register now',
+                        'Sign in now',
                         style: TextStyle(
                           color: Colors.blue,
                           fontWeight: FontWeight.bold,
