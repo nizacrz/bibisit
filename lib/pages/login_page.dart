@@ -35,25 +35,26 @@ class _LoginScreenState extends State<LoginScreen> {
           MaterialPageRoute(builder: (context) => HomePage()),
         );
       } else {
-        // Handle user being null, you can show an error message.
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Sign-in failed. Please try again.'),
-          ),
-        );
+        // Handle user being null, show a generic error snackbar.
+        showSnackbar(context, 'Incorrect email or password. Please try again.');
       }
-    } catch (e) {
-      // Handle sign-in errors, you can show an error message.
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error signing in: $e'),
-        ),
-      );
+    } on FirebaseAuthException catch (e) {
+      // Handle other errors and show a generic error snackbar.
+      showSnackbar(context, 'Sign-in failed. Please try again.');
     } finally {
       setState(() {
         isLoading = false; // Stop loading
       });
     }
+  }
+
+  // Function to show a snackbar
+  void showSnackbar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+      ),
+    );
   }
 
   @override
@@ -172,7 +173,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     if (isLoading)
                       Center(
                         child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.red.shade200),
                         ),
                       ),
                   ],
