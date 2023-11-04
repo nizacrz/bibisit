@@ -13,42 +13,60 @@ class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  bool isLoading = false; // Track loading state
+  bool isLoading = false;
+  bool emailValid = true; // Track email validation
+  bool passwordValid = true; // Track password validation
 
   Future<void> signIn() async {
     setState(() {
       isLoading = true; // Start loading
     });
 
-    try {
-      final UserCredential userCredential =
-          await _auth.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-      final User? user = userCredential.user;
+    final email = emailController.text;
+    final password = passwordController.text;
 
-      if (user != null) {
-        // Successfully signed in, navigate to the home page.
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
-      } else {
-        // Handle user being null, show a generic error snackbar.
-        showSnackbar(context, 'Incorrect email or password. Please try again.');
-      }
-    } on FirebaseAuthException catch (e) {
-      // Handle other errors and show a generic error snackbar.
-      showSnackbar(context, 'Sign-in failed. Please try again.');
-    } finally {
+    if (email.isEmpty || password.isEmpty) {
+      // Handle empty email or password
+      showSnackbar(context, 'Email and password are required.');
       setState(() {
         isLoading = false; // Stop loading
       });
+    } else {
+      // Perform login with validated credentials
+      try {
+        final UserCredential userCredential =
+            await _auth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        final User? user = userCredential.user;
+
+        if (user != null) {
+          // Successfully signed in, navigate to the home page.
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage()),
+          );
+        } else {
+          // Handle user being null, show a generic error snackbar.
+          showSnackbar(
+              context, 'Incorrect email or password. Please try again.');
+        }
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
+          showSnackbar(context, 'Invalid Login Credentials. Please try again.');
+        } else {
+          showSnackbar(context, 'An error occurred. Please try again.');
+        }
+      } finally {
+        setState(() {
+          isLoading = false; // Stop loading
+        });
+      }
     }
   }
 
-  // Function to show a snackbar
+// Function to show a snackbar
   void showSnackbar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -91,10 +109,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: TextField(
+                    key: Key(
+                        'emailTextField'), // Add a key to access the TextField
                     controller: emailController,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.pink.shade100),
+                        borderSide: BorderSide(
+                            color: emailValid
+                                ? Colors.pink.shade100
+                                : Colors.red), // Update border color
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.pink.shade200),
@@ -112,11 +135,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: TextField(
+                    key: Key(
+                        'passwordTextField'), // Add a key to access the TextField
                     controller: passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.pink.shade100),
+                        borderSide: BorderSide(
+                            color: passwordValid
+                                ? Colors.pink.shade100
+                                : Colors.red), // Update border color
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.pink.shade200),
@@ -154,7 +182,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: EdgeInsets.all(20),
                         margin: EdgeInsets.symmetric(horizontal: 25),
                         decoration: BoxDecoration(
-                          color: isLoading ? Colors.grey : Colors.red.shade300,
+                          color: isLoading
+                              ? Colors.red.shade300
+                              : Colors.red.shade300,
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Center(
