@@ -13,8 +13,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  bool isLoading = false; // Track loading state
 
   Future<void> signIn() async {
+    setState(() {
+      isLoading = true; // Start loading
+    });
+
     try {
       final UserCredential userCredential =
           await _auth.signInWithEmailAndPassword(
@@ -44,6 +49,10 @@ class _LoginScreenState extends State<LoginScreen> {
           content: Text('Error signing in: $e'),
         ),
       );
+    } finally {
+      setState(() {
+        isLoading = false; // Stop loading
+      });
     }
   }
 
@@ -135,29 +144,40 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: 25),
 
-                // Sign In Button
-                GestureDetector(
-                  onTap: signIn,
-                  child: Container(
-                    padding: EdgeInsets.all(20),
-                    margin: EdgeInsets.symmetric(horizontal: 25),
-                    decoration: BoxDecoration(
-                      color: Colors.red.shade300,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Sign In",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Roboto',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                // Sign In Button with loading circle
+                Stack(
+                  children: [
+                    GestureDetector(
+                      onTap: isLoading ? null : signIn,
+                      child: Container(
+                        padding: EdgeInsets.all(20),
+                        margin: EdgeInsets.symmetric(horizontal: 25),
+                        decoration: BoxDecoration(
+                          color: isLoading ? Colors.grey : Colors.red.shade300,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Sign In",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Roboto',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                    if (isLoading)
+                      Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+                        ),
+                      ),
+                  ],
                 ),
+
                 SizedBox(height: 25),
 
                 // Divider
