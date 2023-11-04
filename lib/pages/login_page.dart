@@ -1,16 +1,51 @@
-// ignore_for_file: prefer_const_constructors
-
-import 'package:bibisit/components/my_button.dart';
-import 'package:bibisit/components/my_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'homepage.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
 
-  void signUserIn() {}
+class _LoginScreenState extends State<LoginScreen> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  Future<void> signIn() async {
+    try {
+      final UserCredential userCredential =
+          await _auth.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+      final User? user = userCredential.user;
+
+      if (user != null) {
+        // Successfully signed in, navigate to the home page.
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      } else {
+        // Handle user being null, you can show an error message.
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Sign-in failed. Please try again.'),
+          ),
+        );
+      }
+    } catch (e) {
+      // Handle sign-in errors, you can show an error message.
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error signing in: $e'),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,21 +54,18 @@ class LoginScreen extends StatelessWidget {
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
-            // Wrap with SingleChildScrollView to handle overflow
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Logo
-                Container(
+                Center(
                   child: Image.asset(
                     "assets/images/Logo.png",
                     width: 200,
                   ),
                 ),
-
                 SizedBox(height: 30),
-
-                //Welcome back text
+                // Welcome back text
                 Text(
                   'Welcome Back!',
                   style: TextStyle(
@@ -43,30 +75,52 @@ class LoginScreen extends StatelessWidget {
                     fontWeight: FontWeight.normal,
                   ),
                 ),
-
                 SizedBox(height: 25),
 
-                //Username field
-
-                MyTextField(
-                  controller: usernameController,
-                  hintText: 'Username',
-                  obscureText: false,
+                // Email field
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: TextField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.pink.shade100),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.pink.shade200),
+                      ),
+                      fillColor: Colors.red.shade100,
+                      filled: true,
+                      hintText: 'Email',
+                      hintStyle: TextStyle(color: Colors.grey[500]),
+                    ),
+                  ),
                 ),
-
                 SizedBox(height: 25),
 
-                //Password field
-                MyTextField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  obscureText: true,
+                // Password field
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: TextField(
+                    controller: passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.pink.shade100),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.pink.shade200),
+                      ),
+                      fillColor: Colors.red.shade100,
+                      filled: true,
+                      hintText: 'Password',
+                      hintStyle: TextStyle(color: Colors.grey[500]),
+                    ),
+                  ),
                 ),
-
                 SizedBox(height: 25),
 
-                //Forgot Password
-
+                // Forgot Password
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
@@ -79,15 +133,34 @@ class LoginScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-
                 SizedBox(height: 25),
 
-                MyButton(onTap: signUserIn),
+                // Sign In Button
+                GestureDetector(
+                  onTap: signIn,
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    margin: EdgeInsets.symmetric(horizontal: 25),
+                    decoration: BoxDecoration(
+                      color: Colors.red.shade300,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Sign In",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: 'Roboto',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 25),
 
-                SizedBox(height: 25), // Reduced the SizedBox height
-
-                //Divider
-
+                // Divider
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
@@ -95,7 +168,7 @@ class LoginScreen extends StatelessWidget {
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Colors.grey[400],
+                          color: Colors.grey[500],
                         ),
                       ),
                       Padding(
@@ -108,22 +181,19 @@ class LoginScreen extends StatelessWidget {
                       Expanded(
                         child: Divider(
                           thickness: 0.5,
-                          color: Colors.grey[400],
+                          color: Colors.grey[500],
                         ),
                       ),
                     ],
                   ),
                 ),
-
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
 
                 // Google sign-in button
                 Center(
                   child: Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment.center, // Center the row horizontally
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Google button
                       Container(
                         padding: EdgeInsets.all(20),
                         decoration: BoxDecoration(
@@ -139,8 +209,9 @@ class LoginScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 25),
-                //Not a member, register now
+                SizedBox(height: 25),
+
+                // Not a member, register now
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -148,14 +219,16 @@ class LoginScreen extends StatelessWidget {
                       'Not a member?',
                       style: TextStyle(color: Colors.grey[700]),
                     ),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4),
                     Text(
                       'Register now',
                       style: TextStyle(
-                          color: Colors.blue, fontWeight: FontWeight.bold),
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),

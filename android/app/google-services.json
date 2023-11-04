@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "585010189571",
+    "project_id": "bibisit-91514",
+    "storage_bucket": "bibisit-91514.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:585010189571:android:72b9697ce2f9bc572f8536",
+        "android_client_info": {
+          "package_name": "com.example.bibisit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5F5T4238SsTJiF5zt-ilHoQEjtiXxUfE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
