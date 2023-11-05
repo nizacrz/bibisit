@@ -301,7 +301,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 SizedBox(height: 25),
 
-                // Already a member, sign in now
+                // Already have an account?, sign in now
                 GestureDetector(
                   onTap: () {
                     Navigator.pop(context);
@@ -310,7 +310,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Already a member?',
+                        'Already have an account?',
                         style: TextStyle(color: Colors.grey[700]),
                       ),
                       SizedBox(width: 4),

@@ -12,7 +12,20 @@
           "package_name": "com.example.bibisit"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "585010189571-5e1hd926fnli1vj3b0bfkis2h40nrhv0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bibisit",
+            "certificate_hash": "b9a25f112cc4d4162cd32dc3fc5671348b1adb78"
+          }
+        },
+        {
+          "client_id": "585010189571-re3uj0nm6hc7gdirf3rpk1k2hiiqhpnb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyA5F5T4238SsTJiF5zt-ilHoQEjtiXxUfE"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "585010189571-re3uj0nm6hc7gdirf3rpk1k2hiiqhpnb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "585010189571-lco0ipe5j487spu3tn0vg6ifs9l3hu92.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.bibisit.RunnerTests"
+              }
+            }
+          ]
         }
       }
     }

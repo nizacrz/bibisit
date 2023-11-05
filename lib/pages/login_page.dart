@@ -275,7 +275,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: 25),
 
-                // Not a member, register now
+                // Don't have an account? register now
 // Not a member, register now
                 GestureDetector(
                   onTap: () {
@@ -288,7 +288,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Not a member?',
+                        'Don\'t have an account?',
                         style: TextStyle(color: Colors.grey[700]),
                       ),
                       SizedBox(width: 4),

@@ -67,6 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '585010189571',
     projectId: 'bibisit-91514',
     storageBucket: 'bibisit-91514.appspot.com',
+    androidClientId: '585010189571-5e1hd926fnli1vj3b0bfkis2h40nrhv0.apps.googleusercontent.com',
+    iosClientId: '585010189571-n1m9dg74puokid3h3l9o7ppsici264q6.apps.googleusercontent.com',
     iosBundleId: 'com.example.bibisit',
   );
 
@@ -76,6 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '585010189571',
     projectId: 'bibisit-91514',
     storageBucket: 'bibisit-91514.appspot.com',
+    androidClientId: '585010189571-5e1hd926fnli1vj3b0bfkis2h40nrhv0.apps.googleusercontent.com',
+    iosClientId: '585010189571-lco0ipe5j487spu3tn0vg6ifs9l3hu92.apps.googleusercontent.com',
     iosBundleId: 'com.example.bibisit.RunnerTests',
   );
 }
