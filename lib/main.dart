@@ -1,4 +1,3 @@
-import 'package:bibisit/pages/auth_page.dart';
 import 'package:bibisit/pages/homepage.dart';
 import 'package:bibisit/pages/login_page.dart';
 import 'package:bibisit/pages/register_page.dart';
@@ -37,7 +36,6 @@ class MyApp extends StatelessWidget {
         '/login': (context) => LoginScreen(),
         '/register': (context) => RegisterScreen(),
         '/splashScreen': (context) => SplashScreen(),
-        '/auth': (context) => AuthPage(),
         '/home': (context) => HomePage(),
         // Add routes for other screens here, e.g., '/dashboard', etc.
       },
