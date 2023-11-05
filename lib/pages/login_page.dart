@@ -1,3 +1,4 @@
+import 'package:bibisit/pages/forgot_password_screens/forgot_password.dart';
 import 'package:bibisit/pages/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -159,17 +160,27 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(height: 25),
 
-                // Forgot Password
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Forgot Password?',
-                        style: TextStyle(color: Colors.grey[600]),
-                      ),
-                    ],
+                // Forgot Password (wrapped with GestureDetector)
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ForgotPasswordScreen()), // Navigate to ForgotPasswordScreen
+                    );
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Forgot Password?',
+                          style: TextStyle(color: Colors.grey[600]),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 SizedBox(height: 25),
