@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (email.isEmpty || password.isEmpty) {
       // Handle empty email or password
-      showSnackbar(context, 'Email and password are required.');
+      showSnackbar(context, 'Email and password are required.', Colors.red);
       setState(() {
         isLoading = false; // Stop loading
       });
@@ -76,14 +76,16 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         } else {
           // Handle user being null, show a generic error snackbar.
-          showSnackbar(
-              context, 'Incorrect email or password. Please try again.');
+          showSnackbar(context,
+              'Incorrect email or password. Please try again.', Colors.red);
         }
       } on FirebaseAuthException catch (e) {
         if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
-          showSnackbar(context, 'Invalid Login Credentials. Please try again.');
+          showSnackbar(context, 'Invalid Login Credentials. Please try again.',
+              Colors.red);
         } else {
-          showSnackbar(context, 'An error occurred. Please try again.');
+          showSnackbar(
+              context, 'An error occurred. Please try again.', Colors.red);
         }
       } finally {
         setState(() {
@@ -94,10 +96,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
 // Function to show a snackbar
-  void showSnackbar(BuildContext context, String message) {
+  void showSnackbar(
+      BuildContext context, String message, Color backgroundColor) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
+        backgroundColor: backgroundColor, // Set the background color directly
       ),
     );
   }
@@ -297,9 +301,19 @@ class _LoginScreenState extends State<LoginScreen> {
                       borderRadius: BorderRadius.circular(16),
                       color: Colors.grey[200],
                     ),
-                    child: Image.asset(
-                      'assets/images/google.png',
-                      height: 35,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'assets/images/google.png',
+                          height: 35,
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          'Sign in with Google',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
                     ),
                   ),
                 ),

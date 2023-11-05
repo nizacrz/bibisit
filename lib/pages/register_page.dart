@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:bibisit/pages/login_page.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -18,6 +19,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool isLoading = false;
   bool emailValid = true; // Track email validation
   bool passwordValid = true; // Track password validation
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  Future<User?> signUpWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+          await _googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
+
+        // Use createUserWithEmailAndPassword to create a new user with a generated password
+        final UserCredential authResult =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: googleSignInAccount.email,
+          password: 'password', // Set a temporary password
+        );
+
+        final User? user = authResult.user;
+        return user;
+      }
+    } catch (e) {
+      print("Google Sign-Up Error: $e");
+      if (e is FirebaseAuthException && e.code == 'email-already-in-use') {
+        showSnackbar(
+            context, 'Email is already in use by another account.', Colors.red);
+      } else {
+        showSnackbar(context,
+            'An error occurred during sign-up. Please try again.', Colors.red);
+      }
+      return null;
+    }
+  }
 
   Future<void> register() async {
     setState(() {
@@ -30,7 +67,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     if (email.isEmpty || password.isEmpty) {
       // Handle empty email or password
-      showSnackbar(context, 'Email and password are required.');
+      showSnackbar(context, 'Email and password are required.', Colors.red);
+
       setState(() {
         isLoading = false; // Stop loading
       });
@@ -39,7 +77,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     if (password != confirmPassword) {
       // Handle password confirmation mismatch
-      showSnackbar(context, 'Passwords do not match.');
+      showSnackbar(context, 'Passwords do not match.', Colors.red!);
       setState(() {
         isLoading = false; // Stop loading
       });
@@ -48,8 +86,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     if (password.length < 6 || !containsSpecialCharacters(password)) {
       // Check if the password is less than 6 characters or lacks special characters
-      showSnackbar(context,
-          'Enter a combination of at least six numbers, letters and punctuation marks (like ! and &).');
+      showSnackbar(
+          context,
+          'Enter a combination of at least six numbers, letters and punctuation marks (like ! and &).',
+          Colors.red);
       setState(() {
         isLoading = false; // Stop loading
       });
@@ -67,7 +107,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
       if (user != null) {
         // Successfully registered, navigate to the home page.
-        showSnackbar(context, 'Registration successful. Please log in.');
+        showSnackbar(
+            context, 'Registration successful. Please log in.', Colors.red);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => LoginScreen()),
@@ -75,11 +116,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
-        showSnackbar(context, 'Please enter a valid email address.');
+        showSnackbar(context, 'Please enter a valid email address', Colors.red);
       } else if (e.code == 'email-already-in-use') {
-        showSnackbar(context, 'Email already exists.');
+        showSnackbar(context, 'Email already exists', Colors.red);
       } else {
-        showSnackbar(context, 'Registration failed. Please try again.');
+        showSnackbar(
+            context, 'Registration failed. Please try again', Colors.red);
       }
     } finally {
       setState(() {
@@ -89,10 +131,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   // Function to show a snackbar with specific messages
-  void showSnackbar(BuildContext context, String message) {
+  void showSnackbar(
+      BuildContext context, String message, Color backgroundColor) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
+        backgroundColor: backgroundColor, // Set the background color directly
       ),
     );
   }
@@ -280,25 +324,50 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 SizedBox(height: 20),
 
                 // Google sign-in button
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(16),
-                          color: Colors.grey[200],
+                GestureDetector(
+                  onTap: () async {
+                    User? user = await signUpWithGoogle();
+                    if (user != null) {
+                      // User signed in successfully, navigate to the home page
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                      );
+
+                      // Show a Snackbar with a success message
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Sign up with Google successful!'),
+                          duration: Duration(
+                              seconds: 2), // Adjust the duration as needed
                         ),
-                        child: Image.asset(
+                      );
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(16),
+                      color: Colors.grey[200],
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
                           'assets/images/google.png',
                           height: 35,
                         ),
-                      ),
-                    ],
+                        SizedBox(width: 10),
+                        Text(
+                          'Sign up with Google',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
+
                 SizedBox(height: 25),
 
                 // Already have an account?, sign in now
