@@ -3,6 +3,7 @@ import 'package:bibisit/pages/register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'homepage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -18,6 +19,30 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isLoading = false;
   bool emailValid = true; // Track email validation
   bool passwordValid = true; // Track password validation
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  Future<User?> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+          await _googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+            await googleSignInAccount.authentication;
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication.accessToken,
+          idToken: googleSignInAuthentication.idToken,
+        );
+        final UserCredential authResult =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+        final User? user = authResult.user;
+        return user;
+      }
+    } catch (e) {
+      print("Google Sign-In Error: $e");
+      return null;
+    }
+  }
 
   Future<void> signIn() async {
     setState(() {
@@ -254,29 +279,35 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(height: 20),
 
                 // Google sign-in button
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.circular(16),
-                          color: Colors.grey[200],
-                        ),
-                        child: Image.asset(
-                          'assets/images/google.png',
-                          height: 35,
-                        ),
-                      ),
-                    ],
+                GestureDetector(
+                  onTap: () async {
+                    User? user = await signInWithGoogle();
+                    if (user != null) {
+                      // User signed in successfully, navigate to the home page
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                      );
+                    }
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(16),
+                      color: Colors.grey[200],
+                    ),
+                    child: Image.asset(
+                      'assets/images/google.png',
+                      height: 35,
+                    ),
                   ),
                 ),
+
                 SizedBox(height: 25),
 
                 // Don't have an account? register now
-// Not a member, register now
+
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
