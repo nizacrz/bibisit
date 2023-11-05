@@ -1,6 +1,7 @@
 import 'package:bibisit/pages/auth_page.dart';
 import 'package:bibisit/pages/homepage.dart';
 import 'package:bibisit/pages/login_page.dart';
+import 'package:bibisit/pages/register_page.dart';
 import 'package:bibisit/pages/splash_screen.dart';
 import 'package:bibisit/pages/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -34,6 +35,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/welcome': (context) => WelcomeScreen(),
         '/login': (context) => LoginScreen(),
+        '/register': (context) => RegisterScreen(),
         '/splashScreen': (context) => SplashScreen(),
         '/auth': (context) => AuthPage(),
         '/home': (context) => HomePage(),

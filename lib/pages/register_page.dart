@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'homepage.dart';
+import 'package:bibisit/pages/login_page.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -13,6 +13,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   bool isLoading = false;
   bool emailValid = true; // Track email validation
   bool passwordValid = true; // Track password validation
@@ -24,6 +26,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     final email = emailController.text;
     final password = passwordController.text;
+    final confirmPassword = confirmPasswordController.text;
 
     if (email.isEmpty || password.isEmpty) {
       // Handle empty email or password
@@ -31,42 +34,73 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {
         isLoading = false; // Stop loading
       });
-    } else {
-      // Perform registration with validated credentials
-      try {
-        final UserCredential userCredential =
-            await _auth.createUserWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
-        final User? user = userCredential.user;
+      return;
+    }
 
-        if (user != null) {
-          // Successfully registered, navigate to the home page.
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => HomePage()),
-          );
-        } else {
-          showSnackbar(context, 'Registration failed. Please try again.');
-        }
-      } on FirebaseAuthException catch (e) {
-        showSnackbar(context, 'Registration failed. Please try again.');
-      } finally {
-        setState(() {
-          isLoading = false; // Stop loading
-        });
+    if (password != confirmPassword) {
+      // Handle password confirmation mismatch
+      showSnackbar(context, 'Passwords do not match.');
+      setState(() {
+        isLoading = false; // Stop loading
+      });
+      return;
+    }
+
+    if (password.length < 6 || !containsSpecialCharacters(password)) {
+      // Check if the password is less than 6 characters or lacks special characters
+      showSnackbar(context,
+          'Enter a combination of at least six numbers, letters and punctuation marks (like ! and &).');
+      setState(() {
+        isLoading = false; // Stop loading
+      });
+      return;
+    }
+
+    // Perform registration with validated credentials
+    try {
+      final UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final User? user = userCredential.user;
+
+      if (user != null) {
+        // Successfully registered, navigate to the home page.
+        showSnackbar(context, 'Registration successful. Please log in.');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => LoginScreen()),
+        );
       }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-email') {
+        showSnackbar(context, 'Please enter a valid email address.');
+      } else if (e.code == 'email-already-in-use') {
+        showSnackbar(context, 'Email already exists.');
+      } else {
+        showSnackbar(context, 'Registration failed. Please try again.');
+      }
+    } finally {
+      setState(() {
+        isLoading = false; // Stop loading
+      });
     }
   }
 
-  // Function to show a snackbar
+  // Function to show a snackbar with specific messages
   void showSnackbar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
       ),
     );
+  }
+
+  // Function to check if a password contains special characters
+  bool containsSpecialCharacters(String password) {
+    final specialCharacters = RegExp(r'[!@#%^&*()]');
+    return specialCharacters.hasMatch(password);
   }
 
   @override
@@ -154,8 +188,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: TextField(
-                    key: Key('passwordTextField'),
-                    controller: passwordController,
+                    key: Key('confirmPasswordTextField'),
+                    controller: confirmPasswordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(
