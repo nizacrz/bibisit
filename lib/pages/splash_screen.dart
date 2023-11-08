@@ -1,4 +1,4 @@
-import 'package:bibisit/pages/welcome_screen.dart';
+import 'package:bibisit/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,7 +17,7 @@ class _SplashScreenState extends State<SplashScreen>
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const WelcomeScreen()));
+          MaterialPageRoute(builder: (_) => const LoginScreen()));
     });
   }
 

@@ -1,8 +1,7 @@
-import 'package:bibisit/pages/homepage.dart';
+import 'package:bibisit/pages/screens/homepage.dart';
 import 'package:bibisit/pages/login_page.dart';
 import 'package:bibisit/pages/register_page.dart';
 import 'package:bibisit/pages/splash_screen.dart';
-import 'package:bibisit/pages/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
@@ -42,7 +41,6 @@ class MyApp extends StatelessWidget {
 
       initialRoute: '/splashScreen', // Start with the LoginScreen
       routes: {
-        '/welcome': (context) => WelcomeScreen(),
         '/login': (context) => LoginScreen(),
         '/register': (context) => RegisterScreen(),
         '/splashScreen': (context) => SplashScreen(),

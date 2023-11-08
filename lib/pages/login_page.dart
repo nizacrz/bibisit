@@ -1,8 +1,9 @@
 import 'package:bibisit/pages/forgot_password_screen/forgot_password.dart';
 import 'package:bibisit/pages/register_page.dart';
+import 'package:bibisit/pages/screens/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'homepage.dart';
+
 import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
