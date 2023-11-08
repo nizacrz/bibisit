@@ -1,6 +1,7 @@
 import 'package:bibisit/pages/login_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:async';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -15,7 +16,9 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-    Future.delayed(const Duration(seconds: 3), () {
+
+    // Use a Timer to navigate to the login screen after the delay
+    Timer(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const LoginScreen()));
     });
@@ -25,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen>
   void dispose() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
-    super.dispose(); // Call the superclass dispose method
+    super.dispose();
   }
 
   @override
@@ -33,20 +36,18 @@ class _SplashScreenState extends State<SplashScreen>
     return Scaffold(
       body: Stack(
         children: [
-          // Linear gradient background
           Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomLeft,
                 colors: <Color>[
-                  Colors.white, // Light pink color
-                  Colors.red[100]!, // Medium pink color
+                  Colors.white,
+                  Colors.red[100]!,
                 ],
               ),
             ),
           ),
-          // Your splash screen content
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

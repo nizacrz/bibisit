@@ -1,3 +1,4 @@
+import 'package:bibisit/pages/bottom_tab_navigation.dart';
 import 'package:bibisit/pages/forgot_password_screen/forgot_password.dart';
 import 'package:bibisit/pages/register_page.dart';
 import 'package:bibisit/pages/screens/homepage.dart';
@@ -291,7 +292,8 @@ class _LoginScreenState extends State<LoginScreen> {
                       // User signed in successfully, navigate to the home page
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => HomePage()),
+                        MaterialPageRoute(
+                            builder: (context) => BottomTabNavigation()),
                       );
                     }
                   },

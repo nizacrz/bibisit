@@ -41,7 +41,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: Center(
-        child: Text("Taffy Logged in as: " + user.email!),
+        child: Text("Taffy Logged ins as: " + user.email!),
       ),
     );
   }
