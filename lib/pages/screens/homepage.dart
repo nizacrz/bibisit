@@ -1,4 +1,3 @@
-import 'package:bibisit/pages/screens/first_aid.dart';
 import 'package:bibisit/pages/screens/hygiene.dart';
 import 'package:bibisit/pages/screens/safety_basics.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,8 +31,8 @@ class HomePage extends StatelessWidget {
         imagePath: 'assets/images/safety-first.png',
       ),
       CategoryCardData(
-        title: 'First Aid',
-        imagePath: 'assets/images/first-aid.png',
+        title: 'Hygiene',
+        imagePath: 'assets/images/hygiene.png',
       ),
     ];
 
@@ -145,13 +144,6 @@ class HomePage extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => SafetyBasicsScreen(),
-                            ),
-                          );
-                        } else if (categories[index].title == 'First Aid') {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => FirstAidScreen(),
                             ),
                           );
                         } else if (categories[index].title == 'Hygiene') {
