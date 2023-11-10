@@ -34,6 +34,10 @@ class HomePage extends StatelessWidget {
         title: 'Hygiene',
         imagePath: 'assets/images/hygiene.png',
       ),
+      CategoryCardData(
+        title: 'Soon',
+        imagePath: '',
+      ),
     ];
 
     return Scaffold(
@@ -104,19 +108,12 @@ class HomePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Recommended',
+                      'Courses',
                       style: TextStyle(
                         color: Colors.black87,
                         fontSize: 30,
                         fontFamily: 'Coolvetica',
                       ),
-                    ),
-                    Text(
-                      "See All",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.grey),
                     ),
                   ],
                 ),

@@ -25,7 +25,7 @@ class _BottomTabNavigationState extends State<BottomTabNavigation> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.widgets),
-            label: 'Courses',
+            label: 'Aptitude Test',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
@@ -46,7 +46,7 @@ class _BottomTabNavigationState extends State<BottomTabNavigation> {
       case 0:
         return HomePage();
       case 1:
-        return ModulesPage();
+        return BabysittingAptitudeTest();
       case 2:
         return UserPage();
       default:
