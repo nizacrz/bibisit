@@ -10,16 +10,11 @@ class BottomTabNavigation extends StatefulWidget {
 
 class _BottomTabNavigationState extends State<BottomTabNavigation> {
   int _currentIndex = 0;
-  final List<Widget> _pages = [
-    HomePage(),
-    ModulesPage(),
-    UserPage(),
-  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex],
+      body: _getPage(_currentIndex),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: Colors.red.shade300,
         currentIndex: _currentIndex,
@@ -30,7 +25,7 @@ class _BottomTabNavigationState extends State<BottomTabNavigation> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.widgets),
-            label: 'Modules',
+            label: 'Courses',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
@@ -44,5 +39,18 @@ class _BottomTabNavigationState extends State<BottomTabNavigation> {
         },
       ),
     );
+  }
+
+  Widget _getPage(int index) {
+    switch (index) {
+      case 0:
+        return HomePage();
+      case 1:
+        return ModulesPage();
+      case 2:
+        return UserPage();
+      default:
+        return Container(); // Return a default screen if needed
+    }
   }
 }

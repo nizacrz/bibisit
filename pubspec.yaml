@@ -73,3 +73,9 @@ flutter:
     - family: Orelega
       fonts:
         - asset: assets/fonts/OrelegaOne-Regular.ttf
+    - family: Coolvetica
+      fonts:
+        - asset: assets/fonts/coolvetica-rg.otf
+    - family: Tahun
+      fonts:
+        - asset: assets/fonts/aAkhirTahun.ttf
