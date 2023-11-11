@@ -106,6 +106,38 @@ class HomePage extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
+
+                //Find a Job Map Button
+                Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => JobFinderMap()),
+                      );
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.work,
+                          size: 24,
+                        ),
+                        SizedBox(width: 8),
+                        Text(
+                          "Find a Job",
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      primary: Colors.red.shade400,
+                    ),
+                  ),
+                ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
