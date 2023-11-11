@@ -132,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(
                     color: Colors.red[300],
                     fontSize: 35,
-                    fontFamily: 'Cotane',
+                    fontFamily: 'Coolvetica',
                     fontWeight: FontWeight.normal,
                   ),
                 ),
