@@ -1,7 +1,7 @@
 import 'package:bibisit/pages/bottom_tab_navigation.dart';
 import 'package:bibisit/pages/forgot_password_screen/forgot_password.dart';
 import 'package:bibisit/pages/register_page.dart';
-import 'package:bibisit/pages/screens/homepage.dart';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
           // Successfully signed in, navigate to the home page.
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => HomePage()),
+            MaterialPageRoute(builder: (context) => BottomTabNavigation()),
           );
         } else {
           // Handle user being null, show a generic error snackbar.

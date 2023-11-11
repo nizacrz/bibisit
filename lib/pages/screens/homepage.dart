@@ -4,7 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
-  HomePage({Key? key}) : super(key: key);
+  final User? currentUser;
+  HomePage({Key? key, this.currentUser}) : super(key: key);
 
   final user = FirebaseAuth.instance.currentUser!;
 
@@ -22,8 +23,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Extract the first name from the display name
-    List<String> nameParts = user.displayName!.split(' ');
-    String firstName = nameParts.isNotEmpty ? nameParts[0] : '';
+    List<String> nameParts = user.displayName?.split(' ') ?? [];
+    String firstName = nameParts.isNotEmpty ? nameParts.first : '';
+    String displayName = user.displayName ?? 'Trainee User';
 
     List<CategoryCardData> categories = [
       CategoryCardData(
@@ -84,7 +86,7 @@ class HomePage extends StatelessWidget {
                   height: 5,
                 ),
                 Text(
-                  '$firstName 👋',
+                  "${firstName ?? 'Trainee User'} 👋",
                   style: TextStyle(
                     color: Colors.black87,
                     fontSize: 35,

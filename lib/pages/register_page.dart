@@ -108,7 +108,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (user != null) {
         // Successfully registered, navigate to the home page.
         showSnackbar(
-            context, 'Registration successful. Please log in.', Colors.red);
+            context, 'Registration successful. Please log in.', Colors.green);
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => LoginScreen()),
